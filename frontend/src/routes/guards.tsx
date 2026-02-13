@@ -20,9 +20,3 @@ export function RoleRoute({ allow }: { allow: UserRole[] }) {
 
   return <Outlet />;
 }
-
-export function roleHome(role: UserRole): string {
-  if (role === "LANDLORD") return "/landlord";
-  if (role === "ADMIN") return "/admin";
-  return "/tenant";
-}

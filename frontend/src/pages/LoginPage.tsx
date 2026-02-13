@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { roleHome } from "../routes/guards";
+import { roleHome } from "../routes/role";
 import { useAuth } from "../store/auth";
 
 export default function LoginPage() {
@@ -20,8 +20,8 @@ export default function LoginPage() {
       await login({ username, password });
       const u = useAuth.getState().user;
       if (u) navigate(roleHome(u.role));
-    } catch (err: any) {
-      setError(err?.message || "Login failed");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed");
     } finally {
       setLoading(false);
     }

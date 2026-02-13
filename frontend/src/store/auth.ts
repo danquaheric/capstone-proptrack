@@ -20,7 +20,10 @@ interface AuthState {
   logout: () => void;
 }
 
-function applyAuth(set: any, auth: AuthResponse) {
+function applyAuth(
+  set: (partial: Partial<AuthState> | ((state: AuthState) => Partial<AuthState>)) => void,
+  auth: AuthResponse
+) {
   set({ access: auth.access, refresh: auth.refresh, user: auth.user });
 }
 

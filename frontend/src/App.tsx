@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AppShell from "./components/AppShell";
+import MarketingLayout from "./layouts/MarketingLayout";
 import AccessDenied from "./pages/AccessDenied";
 import DashboardAdmin from "./pages/DashboardAdmin";
 import DashboardLandlord from "./pages/DashboardLandlord";
@@ -12,12 +13,20 @@ import { ProtectedRoute, RoleRoute } from "./routes/guards";
 import { useAuth } from "./store/auth";
 
 const router = createBrowserRouter([
+  // Public pages (no global app header — so homepage can be truly full-screen)
   {
-    element: <AppShell />,
+    element: <MarketingLayout />,
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/register", element: <RegisterPage /> },
+    ],
+  },
+
+  // App shell (authenticated app)
+  {
+    element: <AppShell />,
+    children: [
       { path: "/access-denied", element: <AccessDenied /> },
       {
         element: <ProtectedRoute />,

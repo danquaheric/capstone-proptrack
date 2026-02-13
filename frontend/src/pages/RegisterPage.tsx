@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { roleHome } from "../routes/guards";
+import { roleHome } from "../routes/role";
 import { useAuth } from "../store/auth";
 
 export default function RegisterPage() {
@@ -23,8 +23,8 @@ export default function RegisterPage() {
       await register({ username, email, password, first_name: firstName, last_name: lastName });
       const u = useAuth.getState().user;
       if (u) navigate(roleHome(u.role));
-    } catch (err: any) {
-      setError(err?.message || "Registration failed");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Registration failed");
     } finally {
       setLoading(false);
     }
