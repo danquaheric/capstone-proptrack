@@ -15,6 +15,7 @@ interface AuthState {
     password: string;
     first_name?: string;
     last_name?: string;
+    role?: "TENANT" | "LANDLORD";
   }) => Promise<void>;
   login: (payload: { username: string; password: string }) => Promise<void>;
   logout: () => void;

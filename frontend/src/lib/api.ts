@@ -41,6 +41,7 @@ export const api = {
     password: string;
     first_name?: string;
     last_name?: string;
+    role?: "TENANT" | "LANDLORD";
   }) => request<AuthResponse>(`/api/auth/register/`, { method: "POST", body: JSON.stringify(payload) }),
 
   login: (payload: { username: string; password: string }) =>

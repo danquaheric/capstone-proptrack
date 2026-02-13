@@ -13,7 +13,6 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const register = useAuth((s) => s.register);
 
-  // Week 1 decision: role defaults to TENANT (backend enforced)
   const [role, setRole] = useState<"tenant" | "landlord">("tenant");
 
   const [fullName, setFullName] = useState("");
@@ -32,13 +31,13 @@ export default function RegisterPage() {
     setError(null);
     setLoading(true);
     try {
-      // Backend currently ignores role input and defaults to TENANT.
       await register({
         username,
         email,
         password,
         first_name: name.first,
         last_name: name.last,
+        role: role === "landlord" ? "LANDLORD" : "TENANT",
       });
       const u = useAuth.getState().user;
       if (u) navigate(roleHome(u.role));
@@ -87,8 +86,8 @@ export default function RegisterPage() {
                 <div className="space-y-4">
                   <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 ml-1">I am registering as a...</label>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {/* Landlord Card (UI only for now) */}
-                    <label className="relative cursor-not-allowed group opacity-60" title="Week 1: New accounts default to Tenant. Landlord role will be enabled later.">
+                    {/* Landlord Card */}
+                    <label className="relative cursor-pointer group">
                       <input
                         className="peer sr-only"
                         name="role"
@@ -96,14 +95,16 @@ export default function RegisterPage() {
                         value="landlord"
                         checked={role === "landlord"}
                         onChange={() => setRole("landlord")}
-                        disabled
                       />
-                      <div className="flex flex-col items-start p-5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 transition-all h-full">
-                        <div className="mb-4 size-10 flex items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <div className="flex flex-col items-start p-5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all h-full">
+                        <div className="mb-4 size-10 flex items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:scale-110 transition-transform">
                           <span className="material-symbols-outlined">real_estate_agent</span>
                         </div>
                         <p className="font-bold text-slate-900 dark:text-white mb-1">Landlord</p>
                         <p className="text-xs text-slate-500 dark:text-slate-400">Manage properties, track leases &amp; collect rent</p>
+                      </div>
+                      <div className="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 text-primary">
+                        <span className="material-symbols-outlined text-lg">check_circle</span>
                       </div>
                     </label>
 
@@ -131,7 +132,7 @@ export default function RegisterPage() {
                   </div>
 
                   <p className="text-xs text-slate-500 dark:text-slate-400">
-                    Week 1 note: New accounts default to <b>Tenant</b>. Landlord onboarding will be enabled later.
+                    Choose the role that matches you. (Admin role is not available at signup.)
                   </p>
                 </div>
 
