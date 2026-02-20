@@ -1,7 +1,8 @@
-/* Global reset for PropTrack */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -15,7 +16,6 @@ body {
   min-height: 100vh;
 }
 
-/* Avoid default anchor styling fights with Tailwind */
 a {
   color: inherit;
   text-decoration: inherit;
