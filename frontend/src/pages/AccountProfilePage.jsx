@@ -3,11 +3,11 @@ import { getCountries, getCountryCallingCode } from "libphonenumber-js";
 import { api } from "../lib/api";
 import { useAuth } from "../store/auth";
 
-function combineName(first: string, last: string): string {
+function combineName(first, last) {
   return [first, last].filter(Boolean).join(" ").trim();
 }
 
-function splitFullName(fullName: string): { first: string; last: string } {
+function splitFullName(fullName) {
   const parts = fullName.trim().split(/\s+/).filter(Boolean);
   if (parts.length <= 1) return { first: parts[0] || "", last: "" };
   return { first: parts.slice(0, -1).join(" "), last: parts.slice(-1).join(" ") };
@@ -19,7 +19,7 @@ export default function AccountProfilePage() {
   const setUser = useAuth((s) => s.setUser);
 
   const [fullName, setFullName] = useState("");
-  const [phoneCountry, setPhoneCountry] = useState<string>("NG");
+  const [phoneCountry, setPhoneCountry] = useState("NG");
   const [phoneLocal, setPhoneLocal] = useState("");
   const [countryPickerOpen, setCountryPickerOpen] = useState(false);
   const [countryQuery, setCountryQuery] = useState("");
@@ -28,7 +28,7 @@ export default function AccountProfilePage() {
 
   const [dirty, setDirty] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
 
   const email = user?.email || "";
 
@@ -40,7 +40,7 @@ export default function AccountProfilePage() {
     }
   }, []);
 
-  function flagEmoji(iso2: string): string {
+  function flagEmoji(iso2) {
     // Convert ISO2 -> regional indicator symbols
     if (!iso2 || iso2.length !== 2) return "🏳️";
     const A = 0x1f1e6;
@@ -52,7 +52,7 @@ export default function AccountProfilePage() {
   const allCountries = useMemo(() => {
     return getCountries().map((iso2) => {
       const name = regionNames?.of(iso2) || iso2;
-      const calling = `+${getCountryCallingCode(iso2 as Parameters<typeof getCountryCallingCode>[0])}`;
+      const calling = `+${getCountryCallingCodeiso2}`;
       return { iso2, name, calling, flag: flagEmoji(iso2) };
     });
   }, [regionNames]);
@@ -70,7 +70,7 @@ export default function AccountProfilePage() {
   }, [allCountries, countryQuery]);
 
   const parsePhone = useMemo(() => {
-    return (input: string): { country: string; local: string } => {
+    return (input) => {
       const s = (input || "").trim();
       if (!s.startsWith("+")) return { country: "NG", local: s };
 
@@ -86,11 +86,11 @@ export default function AccountProfilePage() {
   }, [allCountries]);
 
   const formatPhone = useMemo(() => {
-    return (countryIso2: string, local: string): string => {
+    return (countryIso2, local) => {
       const l = (local || "").trim();
       if (!l) return "";
       const iso2 = (countryIso2 || "NG").toUpperCase();
-      const calling = `+${getCountryCallingCode(iso2 as Parameters<typeof getCountryCallingCode>[0])}`;
+      const calling = `+${getCountryCallingCodeiso2}`;
       return `${calling} ${l}`.trim();
     };
   }, []);

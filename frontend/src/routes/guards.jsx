@@ -1,6 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../store/auth";
-import type { UserRole } from "../lib/api";
 
 export function ProtectedRoute() {
   const { user, isBootstrapping } = useAuth();
@@ -11,7 +10,7 @@ export function ProtectedRoute() {
   return <Outlet />;
 }
 
-export function RoleRoute({ allow }: { allow: UserRole[] }) {
+export function RoleRoute({ allow }) {
   const { user, isBootstrapping } = useAuth();
 
   if (isBootstrapping) return <div className="p-6">Loading…</div>;

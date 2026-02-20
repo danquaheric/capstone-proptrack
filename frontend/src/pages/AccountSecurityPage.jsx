@@ -10,10 +10,10 @@ export default function AccountSecurityPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
-  async function changePassword(e: React.FormEvent) {
+  async function changePassword(e) {
     e.preventDefault();
     setError(null);
     setSuccess(null);

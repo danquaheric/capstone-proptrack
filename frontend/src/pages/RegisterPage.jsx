@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { roleHome } from "../routes/role";
 import { useAuth } from "../store/auth";
 
-function splitFullName(fullName: string): { first: string; last: string } {
+function splitFullName(fullName) {
   const parts = fullName.trim().split(/\s+/).filter(Boolean);
   if (parts.length <= 1) return { first: parts[0] || "", last: "" };
   return { first: parts.slice(0, -1).join(" "), last: parts.slice(-1).join(" ") };
@@ -13,7 +13,7 @@ export default function RegisterPage() {
   const navigate = useNavigate();
   const register = useAuth((s) => s.register);
 
-  const [role, setRole] = useState<"tenant" | "landlord">("tenant");
+  const [role, setRole] = useState("tenant");
 
   const [fullName, setFullName] = useState("");
   const name = useMemo(() => splitFullName(fullName), [fullName]);
@@ -23,10 +23,10 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e) {
     e.preventDefault();
     setError(null);
     setLoading(true);
@@ -60,7 +60,9 @@ export default function RegisterPage() {
             <h2 className="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-tight">PropTrack</h2>
           </Link>
           <div className="flex items-center gap-6">
-            <span className="hidden md:block text-slate-500 dark:text-slate-400 text-sm font-medium">Already have an account?</span>
+            <span className="hidden md:block text-slate-500 dark:text-slate-400 text-sm font-medium">
+              Already have an account?
+            </span>
             <Link
               to="/login"
               className="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary/10 hover:bg-primary/20 text-primary text-sm font-bold transition-colors"
@@ -76,7 +78,9 @@ export default function RegisterPage() {
             <div className="p-8 md:p-12">
               <div className="text-center mb-10">
                 <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white mb-3">Create your account</h1>
-                <p className="text-slate-500 dark:text-slate-400">Join thousands of landlords and tenants managing property smarter.</p>
+                <p className="text-slate-500 dark:text-slate-400">
+                  Join thousands of landlords and tenants managing property smarter.
+                </p>
               </div>
 
               {error && <div className="mb-6 rounded-lg bg-red-50 text-red-700 p-3 text-sm">{error}</div>}
@@ -120,7 +124,7 @@ export default function RegisterPage() {
                       />
                       <div className="flex flex-col items-start p-5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/50 hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 transition-all h-full">
                         <div className="mb-4 size-10 flex items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
-                          <span className="material-symbols-outlined">home</span>
+                          <span className="material-symbols-outlined">person</span>
                         </div>
                         <p className="font-bold text-slate-900 dark:text-white mb-1">Tenant</p>
                         <p className="text-xs text-slate-500 dark:text-slate-400">Pay rent, report issues &amp; view your lease</p>
@@ -130,27 +134,27 @@ export default function RegisterPage() {
                       </div>
                     </label>
                   </div>
-
                   <p className="text-xs text-slate-500 dark:text-slate-400">
-                    Choose the role that matches you. (Admin role is not available at signup.)
+                    Note: Admin accounts are created internally; signups are limited to tenants and landlords.
                   </p>
                 </div>
 
-                {/* Registration Inputs */}
-                <div className="space-y-5">
+                {/* Personal Information */}
+                <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 ml-1" htmlFor="name">
-                      Full Name
+                      Full name
                     </label>
                     <div className="relative">
-                      <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">person</span>
+                      <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">badge</span>
                       <input
-                        className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
                         id="name"
-                        placeholder="John Doe"
                         type="text"
                         value={fullName}
                         onChange={(e) => setFullName(e.target.value)}
+                        placeholder="John Doe"
+                        className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                        required
                       />
                     </div>
                   </div>
@@ -160,14 +164,14 @@ export default function RegisterPage() {
                       Username
                     </label>
                     <div className="relative">
-                      <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">badge</span>
+                      <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">alternate_email</span>
                       <input
-                        className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
                         id="username"
-                        placeholder="yourname"
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
+                        placeholder="johndoe"
+                        className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
                         required
                       />
                     </div>
@@ -175,17 +179,17 @@ export default function RegisterPage() {
 
                   <div>
                     <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 ml-1" htmlFor="email">
-                      Email Address
+                      Email
                     </label>
                     <div className="relative">
                       <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">mail</span>
                       <input
-                        className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
                         id="email"
-                        placeholder="name@company.com"
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        placeholder="john@example.com"
+                        className="w-full pl-12 pr-4 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
                       />
                     </div>
                   </div>
@@ -197,91 +201,42 @@ export default function RegisterPage() {
                     <div className="relative">
                       <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">lock</span>
                       <input
-                        className="w-full pl-12 pr-12 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
                         id="password"
-                        placeholder="••••••••"
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="w-full pl-12 pr-12 py-3.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
                         required
-                        minLength={6}
                       />
                       <button
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
                         type="button"
-                        onClick={() => setShowPassword((s) => !s)}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                        onClick={() => setShowPassword((v) => !v)}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
                       >
                         <span className="material-symbols-outlined">{showPassword ? "visibility_off" : "visibility"}</span>
                       </button>
                     </div>
-
-                    {/* Password Strength Meter (UI-only for now) */}
-                    <div className="mt-3 space-y-2">
-                      <div className="flex gap-1 h-1.5">
-                        <div className="flex-1 bg-emerald-500 rounded-full" />
-                        <div className="flex-1 bg-emerald-500 rounded-full" />
-                        <div className="flex-1 bg-emerald-500 rounded-full" />
-                        <div className="flex-1 bg-slate-200 dark:bg-slate-700 rounded-full" />
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-[10px] uppercase font-bold tracking-wider text-emerald-500">Strong Password</span>
-                        <span className="text-[10px] text-slate-400">Minimum 8 characters</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
 
-                {/* Submit Button */}
-                <div className="pt-4">
-                  <button
-                    className="w-full py-4 bg-primary hover:bg-primary/90 text-white rounded-lg font-bold text-lg shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2 disabled:opacity-60"
-                    type="submit"
-                    disabled={loading}
-                  >
-                    <span>{loading ? "Creating…" : "Create Account"}</span>
-                    <span className="material-symbols-outlined">arrow_forward</span>
-                  </button>
-                </div>
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full h-12 rounded-lg bg-primary text-white font-bold hover:bg-primary/90 disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
+                >
+                  {loading ? "Creating account…" : "Create account"}
+                </button>
 
-                {/* Footer Links */}
-                <div className="text-center space-y-4">
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed px-4">
-                    By signing up, you agree to our{" "}
-                    <a className="text-primary hover:underline font-medium" href="#">
-                      Terms of Service
-                    </a>{" "}
-                    and{" "}
-                    <a className="text-primary hover:underline font-medium" href="#">
-                      Privacy Policy
-                    </a>
-                    .
-                  </p>
-                </div>
+                <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+                  By creating an account, you agree to our Terms and Privacy Policy.
+                </p>
               </form>
-            </div>
-
-            {/* Trust/Social Proof */}
-            <div className="bg-slate-50 dark:bg-slate-800/80 px-8 py-6 border-t border-slate-200 dark:border-slate-800 flex flex-wrap justify-center gap-6 opacity-60 grayscale items-center">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-sm">shield</span>
-                <span className="text-xs font-bold uppercase tracking-widest">Secure Data</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-sm">verified</span>
-                <span className="text-xs font-bold uppercase tracking-widest">ISO Certified</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-sm">cloud_done</span>
-                <span className="text-xs font-bold uppercase tracking-widest">Cloud Backup</span>
-              </div>
             </div>
           </div>
         </main>
-
-        {/* Global Footer */}
-        <footer className="py-8 px-6 text-center">
-          <p className="text-sm text-slate-500 dark:text-slate-500">© 2024 PropTrack SaaS Inc. All rights reserved.</p>
-        </footer>
       </div>
     </div>
   );

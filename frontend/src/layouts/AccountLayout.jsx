@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../store/auth";
 
-function combineName(first: string, last: string): string {
+function combineName(first, last) {
   return [first, last].filter(Boolean).join(" ").trim();
 }
 
@@ -9,7 +9,7 @@ export default function AccountLayout() {
   const { pathname } = useLocation();
   const user = useAuth((s) => s.user);
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path) => pathname === path;
 
   return (
     <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">

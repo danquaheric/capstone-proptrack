@@ -6,7 +6,7 @@ export default function TenantLayout() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
-  const isActive = (p: string) => pathname === p;
+  const isActive = (p) => pathname === p;
 
   return (
     <div className="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen">

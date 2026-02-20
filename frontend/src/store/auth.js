@@ -1,35 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { api, type AuthResponse, type User } from "../lib/api";
+import { api } from "../lib/api";
 
-interface AuthState {
-  access: string | null;
-  refresh: string | null;
-  user: User | null;
-  isBootstrapping: boolean;
-
-  bootstrap: () => Promise<void>;
-  register: (payload: {
-    username: string;
-    email?: string;
-    password: string;
-    first_name?: string;
-    last_name?: string;
-    role?: "TENANT" | "LANDLORD";
-  }) => Promise<void>;
-  login: (payload: { username: string; password: string }) => Promise<void>;
-  logout: () => void;
-  setUser: (user: User | null) => void;
-}
-
-function applyAuth(
-  set: (partial: Partial<AuthState> | ((state: AuthState) => Partial<AuthState>)) => void,
-  auth: AuthResponse
-) {
+function applyAuth(set, auth) {
   set({ access: auth.access, refresh: auth.refresh, user: auth.user });
 }
 
-export const useAuth = create<AuthState>()(
+export const useAuth = create()(
   persist(
     (set, get) => ({
       access: null,
