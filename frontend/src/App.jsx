@@ -7,6 +7,8 @@ import AccountLayout from "./layouts/AccountLayout";
 import TenantLayout from "./layouts/TenantLayout";
 import DashboardAdmin from "./pages/DashboardAdmin";
 import DashboardLandlord from "./pages/DashboardLandlord";
+import LandlordPropertyListPage from "./pages/LandlordPropertyListPage";
+import LandlordCreatePropertyPage from "./pages/LandlordCreatePropertyPage";
 import AccountBillingPage from "./pages/AccountBillingPage";
 import AccountNotificationsPage from "./pages/AccountNotificationsPage";
 import AccountProfilePage from "./pages/AccountProfilePage";
@@ -54,7 +56,11 @@ const router = createBrowserRouter([
 
           {
             element: <RoleRoute allow={["LANDLORD"]} />,
-            children: [{ path: "/landlord", element: <DashboardLandlord /> }],
+            children: [
+              { path: "/landlord", element: <DashboardLandlord /> },
+              { path: "/landlord/properties", element: <LandlordPropertyListPage /> },
+              { path: "/landlord/properties/new", element: <LandlordCreatePropertyPage /> },
+            ],
           },
           {
             element: <RoleRoute allow={["TENANT"]} />,

@@ -79,4 +79,22 @@ export const api = {
       headers: { Authorization: `Bearer ${accessToken}` },
       body: JSON.stringify(payload),
     }),
+
+  /** @param {string} accessToken */
+  listProperties: (accessToken) =>
+    request(`/api/properties/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }),
+
+  /**
+   * @param {string} accessToken
+   * @param {{name:string,street_address:string,city?:string,state?:string,zip_code?:string,units?:number,monthly_rent?:number|string,status?:string}} payload
+   */
+  createProperty: (accessToken, payload) =>
+    request(`/api/properties/`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify(payload),
+    }),
 };
