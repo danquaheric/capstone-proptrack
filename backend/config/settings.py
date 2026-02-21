@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     # Local
     'users',
     'authapi',
+    'properties',
 ]
 
 MIDDLEWARE = [
