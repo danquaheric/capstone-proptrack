@@ -133,4 +133,45 @@ export const api = {
         headers: { Authorization: `Bearer ${accessToken}` },
       }
     ),
+
+  /**
+   * @param {string} accessToken
+   * @param {{status?:"PAID"|"UNPAID"|"OVERDUE", q?:string}} params
+   */
+  listRentPayments: (accessToken, params = {}) => {
+    const q = new URLSearchParams();
+    if (params.status) q.set("status", params.status);
+    if (params.q) q.set("q", params.q);
+    const suffix = q.toString() ? `?${q.toString()}` : "";
+    return request(`/api/rent-payments/${suffix}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  },
+
+  /** @param {string} accessToken */
+  tenantRentStatus: (accessToken) =>
+    request(`/api/tenants/me/rent-status/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }),
+
+  /**
+   * @param {string} accessToken
+   * @param {{rental_property:number, tenant:number, amount:number|string, due_date:string, paid_at?:string|null}} payload
+   */
+  createRentPayment: (accessToken, payload) =>
+    request(`/api/rent-payments/`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify(payload),
+    }),
+
+  /** @param {string} accessToken @param {number|string} id @param {object} payload */
+  updateRentPayment: (accessToken, id, payload) =>
+    request(`/api/rent-payments/${id}/`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify(payload),
+    }),
 };

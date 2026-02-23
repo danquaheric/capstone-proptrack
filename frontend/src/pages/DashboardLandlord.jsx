@@ -8,6 +8,13 @@ export default function DashboardLandlord() {
 
       <div className="mt-6 flex flex-wrap gap-3">
         <Link
+          to="/landlord/rent"
+          className="inline-flex items-center gap-2 px-5 h-11 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+        >
+          <span className="material-symbols-outlined !text-lg">payments</span>
+          Rent Overview
+        </Link>
+        <Link
           to="/landlord/properties"
           className="inline-flex items-center gap-2 px-5 h-11 rounded-lg bg-primary text-white text-sm font-bold hover:bg-blue-700 shadow-lg shadow-primary/20 transition-all"
         >

@@ -11,6 +11,7 @@ import LandlordPropertyListPage from "./pages/LandlordPropertyListPage";
 import LandlordCreatePropertyPage from "./pages/LandlordCreatePropertyPage";
 import LandlordPropertyDetailPage from "./pages/LandlordPropertyDetailPage";
 import LandlordEditPropertyPage from "./pages/LandlordEditPropertyPage";
+import LandlordRentOverviewPage from "./pages/LandlordRentOverviewPage";
 import AccountBillingPage from "./pages/AccountBillingPage";
 import AccountNotificationsPage from "./pages/AccountNotificationsPage";
 import AccountProfilePage from "./pages/AccountProfilePage";
@@ -65,6 +66,7 @@ const router = createBrowserRouter([
               { path: "/landlord/properties/new", element: <LandlordCreatePropertyPage /> },
               { path: "/landlord/properties/:id", element: <LandlordPropertyDetailPage /> },
               { path: "/landlord/properties/:id/edit", element: <LandlordEditPropertyPage /> },
+              { path: "/landlord/rent", element: <LandlordRentOverviewPage /> },
             ],
           },
           {
