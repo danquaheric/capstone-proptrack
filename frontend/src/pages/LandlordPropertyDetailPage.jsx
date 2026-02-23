@@ -179,9 +179,6 @@ export default function LandlordPropertyDetailPage() {
                 <span className={`w-1.5 h-1.5 rounded-full ${pill.dot}`}></span>
                 {pill.label}
               </span>
-              <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                Residential
-              </span>
             </div>
           </div>
 
@@ -250,7 +247,7 @@ export default function LandlordPropertyDetailPage() {
                       <span className="material-symbols-outlined text-slate-400 text-3xl">image</span>
                     </div>
                     <div className="col-span-1 rounded-xl bg-slate-200 dark:bg-slate-800 overflow-hidden relative flex items-center justify-center cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-700 transition-all">
-                      <span className="text-slate-500 font-bold text-sm">+ Photos</span>
+                      <span className="text-slate-500 font-bold text-sm">Photos</span>
                     </div>
                   </div>
                 </section>
@@ -288,7 +285,7 @@ export default function LandlordPropertyDetailPage() {
                     <h3 className="text-xl font-bold text-slate-900 dark:text-white">Location</h3>
                     <button className="text-primary text-sm font-bold flex items-center gap-1">
                       <span className="material-symbols-outlined text-sm">open_in_new</span>
-                      Open in Maps
+                      Maps
                     </button>
                   </div>
                   <div className="w-full aspect-video rounded-lg overflow-hidden bg-slate-100 dark:bg-slate-800 relative flex items-center justify-center">
@@ -311,8 +308,8 @@ export default function LandlordPropertyDetailPage() {
                     </div>
                     <div>
                       <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Occupancy Rate</p>
-                      <h4 className="text-2xl font-bold text-slate-900 dark:text-white">--</h4>
-                      <p className="text-xs text-slate-400 mt-2">Tenant tracking coming soon</p>
+                      <h4 className="text-2xl font-bold text-slate-900 dark:text-white">N/A</h4>
+                      <p className="text-xs text-slate-400 mt-2">Unit-level occupancy not implemented yet</p>
                     </div>
                   </div>
 
@@ -337,8 +334,8 @@ export default function LandlordPropertyDetailPage() {
                     </div>
                     <div>
                       <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Open Tickets</p>
-                      <h4 className="text-2xl font-bold text-slate-900 dark:text-white">0</h4>
-                      <p className="text-xs text-slate-400 mt-2">No maintenance requests</p>
+                      <h4 className="text-2xl font-bold text-slate-900 dark:text-white">N/A</h4>
+                      <p className="text-xs text-slate-400 mt-2">Maintenance module not implemented yet</p>
                     </div>
                   </div>
                 </div>

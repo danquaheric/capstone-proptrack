@@ -71,7 +71,6 @@ export default function TenantLayout() {
               >
                 <span className="material-symbols-outlined">notifications</span>
                 <span>Notifications</span>
-                <span className="ml-auto w-5 h-5 bg-primary text-white text-[10px] flex items-center justify-center rounded-full">3</span>
               </Link>
             </nav>
           </div>
