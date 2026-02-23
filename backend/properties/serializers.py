@@ -4,6 +4,8 @@ from .models import Property
 
 
 class PropertySerializer(serializers.ModelSerializer):
+    tenant_username = serializers.CharField(source="tenant.username", read_only=True)
+
     class Meta:
         model = Property
         fields = [
@@ -16,7 +18,9 @@ class PropertySerializer(serializers.ModelSerializer):
             "units",
             "monthly_rent",
             "status",
+            "tenant",
+            "tenant_username",
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "created_at", "updated_at"]
+        read_only_fields = ["id", "created_at", "updated_at", "tenant_username"]

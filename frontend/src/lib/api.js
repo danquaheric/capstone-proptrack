@@ -97,4 +97,40 @@ export const api = {
       headers: { Authorization: `Bearer ${accessToken}` },
       body: JSON.stringify(payload),
     }),
+
+  /** @param {string} accessToken @param {number|string} id */
+  getProperty: (accessToken, id) =>
+    request(`/api/properties/${id}/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }),
+
+  /**
+   * @param {string} accessToken
+   * @param {number|string} id
+   * @param {{name?:string,street_address?:string,city?:string,state?:string,zip_code?:string,units?:number,monthly_rent?:number|string,status?:string}} payload
+   */
+  updateProperty: (accessToken, id, payload) =>
+    request(`/api/properties/${id}/`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify(payload),
+    }),
+
+  /** @param {string} accessToken @param {number|string} id @param {{tenant_id:number|null}} payload */
+  assignTenant: (accessToken, id, payload) =>
+    request(`/api/properties/${id}/assign-tenant/`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify(payload),
+    }),
+
+  /** @param {string} accessToken @param {string=} q */
+  listTenants: (accessToken, q = "") =>
+    request(`/api/users/tenants/${q ? `?q=${encodeURIComponent(q)}` : ""}`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    ),
 };

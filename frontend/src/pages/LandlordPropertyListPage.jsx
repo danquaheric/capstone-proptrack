@@ -168,7 +168,8 @@ export default function LandlordPropertyListPage() {
                       return (
                         <tr
                           key={p.id}
-                          className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors group"
+                          onClick={() => navigate(`/landlord/properties/${p.id}`)}
+                          className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50 transition-colors group cursor-pointer"
                         >
                           <td className="px-6 py-4">
                             <div className="flex items-center gap-4">
@@ -208,9 +209,12 @@ export default function LandlordPropertyListPage() {
                               <span className={`w-1.5 h-1.5 rounded-full ${pill.dot}`}></span> {pill.label}
                             </span>
                           </td>
-                          <td className="px-6 py-4 text-right">
-                            <button className="p-2 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg text-slate-400 transition-colors">
-                              <span className="material-symbols-outlined !text-xl">more_vert</span>
+                          <td className="px-6 py-4 text-right" onClick={(e) => e.stopPropagation()}>
+                            <button
+                              onClick={() => navigate(`/landlord/properties/${p.id}`)}
+                              className="px-3 py-2 rounded-lg text-sm font-bold text-primary hover:bg-primary/10"
+                            >
+                              View
                             </button>
                           </td>
                         </tr>

@@ -15,6 +15,15 @@ class Property(models.Model):
         related_name="properties",
     )
 
+    # Assigned tenant (optional). A tenant can be assigned to a property for read-only access.
+    tenant = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assigned_properties",
+    )
+
     name = models.CharField(max_length=255)
     street_address = models.CharField(max_length=255)
     city = models.CharField(max_length=128, blank=True, default="")

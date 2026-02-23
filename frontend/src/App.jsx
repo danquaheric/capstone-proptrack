@@ -9,6 +9,8 @@ import DashboardAdmin from "./pages/DashboardAdmin";
 import DashboardLandlord from "./pages/DashboardLandlord";
 import LandlordPropertyListPage from "./pages/LandlordPropertyListPage";
 import LandlordCreatePropertyPage from "./pages/LandlordCreatePropertyPage";
+import LandlordPropertyDetailPage from "./pages/LandlordPropertyDetailPage";
+import LandlordEditPropertyPage from "./pages/LandlordEditPropertyPage";
 import AccountBillingPage from "./pages/AccountBillingPage";
 import AccountNotificationsPage from "./pages/AccountNotificationsPage";
 import AccountProfilePage from "./pages/AccountProfilePage";
@@ -20,6 +22,7 @@ import TenantDashboardPage from "./pages/TenantDashboardPage";
 import TenantMaintenancePage from "./pages/TenantMaintenancePage";
 import TenantNotificationsPage from "./pages/TenantNotificationsPage";
 import TenantRentPage from "./pages/TenantRentPage";
+import TenantPropertiesPage from "./pages/TenantPropertiesPage";
 import { ProtectedRoute, RoleRoute } from "./routes/guards";
 import { useAuth } from "./store/auth";
 
@@ -60,6 +63,8 @@ const router = createBrowserRouter([
               { path: "/landlord", element: <DashboardLandlord /> },
               { path: "/landlord/properties", element: <LandlordPropertyListPage /> },
               { path: "/landlord/properties/new", element: <LandlordCreatePropertyPage /> },
+              { path: "/landlord/properties/:id", element: <LandlordPropertyDetailPage /> },
+              { path: "/landlord/properties/:id/edit", element: <LandlordEditPropertyPage /> },
             ],
           },
           {
@@ -70,6 +75,7 @@ const router = createBrowserRouter([
                 element: <TenantLayout />,
                 children: [
                   { index: true, element: <TenantDashboardPage /> },
+                  { path: "properties", element: <TenantPropertiesPage /> },
                   { path: "rent", element: <TenantRentPage /> },
                   { path: "maintenance", element: <TenantMaintenancePage /> },
                   { path: "notifications", element: <TenantNotificationsPage /> },
