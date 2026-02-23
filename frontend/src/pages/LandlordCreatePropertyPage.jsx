@@ -12,6 +12,8 @@ export default function LandlordCreatePropertyPage() {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zipCode, setZipCode] = useState("");
+  const [units, setUnits] = useState("");
+  const [monthlyRent, setMonthlyRent] = useState("");
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -25,12 +27,15 @@ export default function LandlordCreatePropertyPage() {
     setSubmitting(true);
     setError("");
     try {
+      const rentValue = parseFloat(String(monthlyRent).replace(/[^0-9.]/g, "")) || 0;
       await api.createProperty(access, {
         name: name.trim(),
         street_address: streetAddress.trim(),
         city: city.trim(),
         state: state.trim(),
         zip_code: zipCode.trim(),
+        units: parseInt(units, 10) || 0,
+        monthly_rent: rentValue,
       });
       navigate("/landlord/properties");
     } catch (err) {
@@ -185,6 +190,50 @@ export default function LandlordCreatePropertyPage() {
                       placeholder="90210"
                       type="text"
                     />
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-slate-200 dark:border-slate-800 mt-4">
+                  <p className="text-xs font-semibold text-primary uppercase tracking-widest mb-4 flex items-center gap-2">
+                    <span className="material-symbols-outlined text-sm">sell</span>
+                    Units & Pricing
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2" htmlFor="units">
+                        <span className="material-symbols-outlined text-sm text-slate-400">apartment</span>
+                        Number of Units
+                      </label>
+                      <input
+                        id="units"
+                        type="number"
+                        min={1}
+                        value={units}
+                        onChange={(e) => setUnits(e.target.value)}
+                        className="w-full px-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                        placeholder="e.g. 1"
+                      />
+                      <p className="text-xs text-slate-500">Total leasable spaces in this property.</p>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2" htmlFor="monthlyRent">
+                        <span className="material-symbols-outlined text-sm text-slate-400">payments</span>
+                        Monthly Rent per Unit
+                      </label>
+                      <div className="relative">
+                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-medium">$</span>
+                        <input
+                          id="monthlyRent"
+                          type="text"
+                          value={monthlyRent}
+                          onChange={(e) => setMonthlyRent(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                          placeholder="1,500"
+                        />
+                      </div>
+                      <p className="text-xs text-slate-500">Base monthly rate for a standard unit.</p>
+                    </div>
                   </div>
                 </div>
 
