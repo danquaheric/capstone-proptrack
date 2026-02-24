@@ -1,6 +1,14 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getTheme, setTheme } from "../lib/theme";
 
 export default function HomePage() {
+  const [theme, setThemeState] = useState("light");
+
+  useEffect(() => {
+    setThemeState(getTheme());
+  }, []);
+
   return (
     <div className="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 transition-colors duration-300">
       <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
@@ -24,6 +32,21 @@ export default function HomePage() {
                 </a>
               </nav>
               <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const next = theme === "dark" ? "light" : "dark";
+                    setTheme(next);
+                    setThemeState(next);
+                  }}
+                  className="h-10 rounded-lg px-2 sm:px-3 text-sm font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all inline-flex items-center gap-2"
+                  aria-label="Toggle theme"
+                  title="Toggle theme"
+                >
+                  <span className="material-symbols-outlined !text-[18px]">{theme === "dark" ? "dark_mode" : "light_mode"}</span>
+                  <span className="hidden sm:inline">{theme === "dark" ? "Dark" : "Light"}</span>
+                </button>
+
                 <Link
                   to="/login"
                   className="hidden sm:flex h-10 items-center justify-center rounded-lg px-4 text-sm font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
