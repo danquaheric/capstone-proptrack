@@ -13,15 +13,15 @@ export default function AppShell() {
           <div className="flex items-center gap-3">
             {user ? (
               <>
-                <span className="text-sm text-slate-500">{user.username} · {user.role}</span>
+                <span className="text-sm text-slate-500 dark:text-slate-300">{user.username} · {user.role}</span>
                 <Link
                   to="/account"
-                  className="h-9 rounded-lg px-4 text-sm font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center"
+                  className="h-9 rounded-lg px-4 text-sm font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center"
                 >
                   Account
                 </Link>
                 <button
-                  className="h-9 rounded-lg px-4 text-sm font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  className="h-9 rounded-lg px-4 text-sm font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800"
                   onClick={() => {
                     logout();
                     navigate("/");
