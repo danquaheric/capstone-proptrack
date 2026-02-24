@@ -18,7 +18,7 @@ export default function AppShell() {
       <div className="border-b border-slate-200 dark:border-slate-800 bg-white/70 dark:bg-slate-900/60 backdrop-blur">
         <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
           <Link to="/" className="font-extrabold text-primary">PropTrack</Link>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-end gap-2 sm:gap-3 flex-wrap">
             <button
               type="button"
               onClick={() => {
@@ -26,7 +26,7 @@ export default function AppShell() {
                 setTheme(next);
                 setThemeState(next);
               }}
-              className="h-9 rounded-lg px-3 text-sm font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center gap-2"
+              className="h-9 rounded-lg px-2 sm:px-3 text-sm font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center gap-2"
               aria-label="Toggle theme"
               title="Toggle theme"
             >
@@ -36,15 +36,15 @@ export default function AppShell() {
 
             {user ? (
               <>
-                <span className="text-sm text-slate-500 dark:text-slate-300">{user.username} · {user.role}</span>
+                <span className="hidden md:inline text-sm text-slate-500 dark:text-slate-300">{user.username} · {user.role}</span>
                 <Link
                   to="/account"
-                  className="h-9 rounded-lg px-4 text-sm font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center"
+                  className="h-9 rounded-lg px-2 sm:px-4 text-sm font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800 inline-flex items-center"
                 >
                   Account
                 </Link>
                 <button
-                  className="h-9 rounded-lg px-4 text-sm font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800"
+                  className="h-9 rounded-lg px-2 sm:px-4 text-sm font-bold border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-100 hover:bg-slate-50 dark:hover:bg-slate-800"
                   onClick={() => {
                     logout();
                     navigate("/");
