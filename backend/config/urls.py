@@ -23,4 +23,6 @@ urlpatterns = [
     path('api/', include('properties.urls')),
     path('api/', include('users.urls')),
     path('api/', include('rent.urls')),
+    path('api/', include('maintenance.urls')),
+    path('api/', include('notifications.urls')),
 ]

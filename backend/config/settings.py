@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'authapi',
     'properties',
     'rent',
+    'maintenance',
+    'notifications',
 ]
 
 MIDDLEWARE = [

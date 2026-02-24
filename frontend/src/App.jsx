@@ -20,7 +20,9 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import TenantDashboardPage from "./pages/TenantDashboardPage";
-import TenantMaintenancePage from "./pages/TenantMaintenancePage";
+import TenantMaintenanceListPage from "./pages/TenantMaintenanceListPage";
+import TenantMaintenanceRequestFormPage from "./pages/TenantMaintenanceRequestFormPage";
+import LandlordMaintenanceInboxPage from "./pages/LandlordMaintenanceInboxPage";
 import TenantNotificationsPage from "./pages/TenantNotificationsPage";
 import TenantRentPage from "./pages/TenantRentPage";
 import TenantPropertiesPage from "./pages/TenantPropertiesPage";
@@ -67,6 +69,7 @@ const router = createBrowserRouter([
               { path: "/landlord/properties/:id", element: <LandlordPropertyDetailPage /> },
               { path: "/landlord/properties/:id/edit", element: <LandlordEditPropertyPage /> },
               { path: "/landlord/rent", element: <LandlordRentOverviewPage /> },
+              { path: "/landlord/maintenance", element: <LandlordMaintenanceInboxPage /> },
             ],
           },
           {
@@ -79,7 +82,8 @@ const router = createBrowserRouter([
                   { index: true, element: <TenantDashboardPage /> },
                   { path: "properties", element: <TenantPropertiesPage /> },
                   { path: "rent", element: <TenantRentPage /> },
-                  { path: "maintenance", element: <TenantMaintenancePage /> },
+                  { path: "maintenance", element: <TenantMaintenanceListPage /> },
+                  { path: "maintenance/new", element: <TenantMaintenanceRequestFormPage /> },
                   { path: "notifications", element: <TenantNotificationsPage /> },
                 ],
               },

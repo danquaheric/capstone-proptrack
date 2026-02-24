@@ -174,4 +174,70 @@ export const api = {
       headers: { Authorization: `Bearer ${accessToken}` },
       body: JSON.stringify(payload),
     }),
+
+  // Maintenance
+  /** @param {string} accessToken @param {{status?:string,q?:string}=} params */
+  listMaintenance: (accessToken, params = {}) => {
+    const q = new URLSearchParams();
+    if (params.status) q.set("status", params.status);
+    if (params.q) q.set("q", params.q);
+    const suffix = q.toString() ? `?${q.toString()}` : "";
+    return request(`/api/maintenance/${suffix}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+  },
+
+  /** @param {string} accessToken @param {{rental_property:number,category:string,priority:string,title?:string,description:string}} payload */
+  createMaintenance: (accessToken, payload) =>
+    request(`/api/maintenance/`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify(payload),
+    }),
+
+  /** @param {string} accessToken @param {number|string} id @param {{status:string}} payload */
+  updateMaintenanceStatus: (accessToken, id, payload) =>
+    request(`/api/maintenance/${id}/status/`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify(payload),
+    }),
+
+  // Notifications
+  /** @param {string} accessToken */
+  listNotifications: (accessToken) =>
+    request(`/api/notifications/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }),
+
+  /** @param {string} accessToken @param {number|string} id */
+  markNotificationRead: (accessToken, id) =>
+    request(`/api/notifications/${id}/read/`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }),
+
+  /** @param {string} accessToken */
+  readAllNotifications: (accessToken) =>
+    request(`/api/notifications/read-all/`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }),
+
+  /** @param {string} accessToken */
+  getNotificationPreferences: (accessToken) =>
+    request(`/api/notification-preferences/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }),
+
+  /** @param {string} accessToken @param {object} payload */
+  updateNotificationPreferences: (accessToken, payload) =>
+    request(`/api/notification-preferences/`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${accessToken}` },
+      body: JSON.stringify(payload),
+    }),
 };
