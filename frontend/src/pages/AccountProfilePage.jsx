@@ -52,7 +52,7 @@ export default function AccountProfilePage() {
   const allCountries = useMemo(() => {
     return getCountries().map((iso2) => {
       const name = regionNames?.of(iso2) || iso2;
-      const calling = `+${getCountryCallingCodeiso2}`;
+      const calling = `+${getCountryCallingCode(iso2)}`;
       return { iso2, name, calling, flag: flagEmoji(iso2) };
     });
   }, [regionNames]);
@@ -90,7 +90,7 @@ export default function AccountProfilePage() {
       const l = (local || "").trim();
       if (!l) return "";
       const iso2 = (countryIso2 || "NG").toUpperCase();
-      const calling = `+${getCountryCallingCodeiso2}`;
+      const calling = `+${getCountryCallingCode(iso2)}`;
       return `${calling} ${l}`.trim();
     };
   }, []);
