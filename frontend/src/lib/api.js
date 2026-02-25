@@ -113,6 +113,53 @@ export const api = {
       headers: { Authorization: `Bearer ${accessToken}` },
     }),
 
+  /** @param {string} accessToken @param {number|string} id */
+  listPropertyPhotos: (accessToken, id) =>
+    request(`/api/properties/${id}/photos/`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    }),
+
+  /** @param {string} accessToken @param {number|string} id @param {File} file @param {{caption?:string, sort_order?:number}=} meta */
+  uploadPropertyPhoto: async (accessToken, id, file, meta = {}) => {
+    const form = new FormData();
+    form.append("image", file);
+    if (meta.caption) form.append("caption", meta.caption);
+    if (typeof meta.sort_order === "number") form.append("sort_order", String(meta.sort_order));
+
+    const res = await fetch(`${API_BASE}/api/properties/${id}/photos/`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      body: form,
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(text || `Upload failed: ${res.status}`);
+    }
+
+    return await res.json();
+  },
+
+  /** @param {string} accessToken @param {number|string} id @param {number|string} photoId */
+  deletePropertyPhoto: async (accessToken, id, photoId) => {
+    const res = await fetch(`${API_BASE}/api/properties/${id}/photos/${photoId}/`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!res.ok && res.status !== 204) {
+      const text = await res.text().catch(() => "");
+      throw new Error(text || `Delete failed: ${res.status}`);
+    }
+
+    return true;
+  },
+
   /**
    * @param {string} accessToken
    * @param {number|string} id

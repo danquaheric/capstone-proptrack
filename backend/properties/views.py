@@ -1,11 +1,12 @@
 from django.contrib.auth import get_user_model
 from rest_framework import generics, status
+from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Property
+from .models import Property, PropertyPhoto
 from .permissions import PropertyAccessPermission
-from .serializers import PropertySerializer
+from .serializers import PropertyPhotoSerializer, PropertySerializer
 
 User = get_user_model()
 
@@ -40,6 +41,48 @@ class PropertyRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     def get_queryset(self):
         # Keep queryset broad; object permissions enforce access.
         return Property.objects.all()
+
+
+class PropertyPhotoListCreateView(generics.ListCreateAPIView):
+    serializer_class = PropertyPhotoSerializer
+    permission_classes = [PropertyAccessPermission]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_property(self):
+        pk = self.kwargs.get("pk")
+        return Property.objects.get(pk=pk)
+
+    def get_queryset(self):
+        prop = self.get_property()
+        self.check_object_permissions(self.request, prop)
+        return PropertyPhoto.objects.filter(property=prop)
+
+    def perform_create(self, serializer):
+        prop = self.get_property()
+        self.check_object_permissions(self.request, prop)
+        serializer.save(property=prop)
+
+    def get_serializer_context(self):
+        ctx = super().get_serializer_context()
+        ctx["request"] = self.request
+        return ctx
+
+
+class PropertyPhotoDestroyView(generics.DestroyAPIView):
+    serializer_class = PropertyPhotoSerializer
+    permission_classes = [PropertyAccessPermission]
+    lookup_url_kwarg = "photo_id"
+
+    def get_queryset(self):
+        # We enforce permissions against the parent property
+        return PropertyPhoto.objects.select_related("property").all()
+
+    def perform_destroy(self, instance):
+        self.check_object_permissions(self.request, instance.property)
+        # delete file + db record
+        if instance.image:
+            instance.image.delete(save=False)
+        instance.delete()
 
 
 class PropertyAssignTenantView(APIView):

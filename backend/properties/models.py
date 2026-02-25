@@ -46,3 +46,17 @@ class Property(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} ({self.owner_id})"
+
+
+class PropertyPhoto(models.Model):
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name="photos")
+    image = models.ImageField(upload_to="property_photos/")
+    caption = models.CharField(max_length=255, blank=True, default="")
+    sort_order = models.PositiveIntegerField(default=0)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["sort_order", "-uploaded_at"]
+
+    def __str__(self) -> str:
+        return f"Photo({self.property_id}) #{self.id}"

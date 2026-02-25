@@ -18,12 +18,14 @@ export default function LandlordCreatePropertyPage() {
   const [units, setUnits] = useState("");
   const [monthlyRent, setMonthlyRent] = useState("");
 
+  const [photos, setPhotos] = useState([]);
+
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
   const basicValid = Boolean(name.trim() && streetAddress.trim());
   const unitsValid = true; // optional fields for now
-  const photosValid = true; // placeholder until upload is implemented
+  const photosValid = true; // optional
 
   const canNext =
     !submitting &&
@@ -58,7 +60,7 @@ export default function LandlordCreatePropertyPage() {
     try {
       const freshAccess = await ensureAccess();
       const rentValue = parseFloat(String(monthlyRent).replace(/[^0-9.]/g, "")) || 0;
-      await api.createProperty(freshAccess, {
+      const created = await api.createProperty(freshAccess, {
         name: name.trim(),
         street_address: streetAddress.trim(),
         city: city.trim(),
@@ -67,7 +69,16 @@ export default function LandlordCreatePropertyPage() {
         units: parseInt(units, 10) || 0,
         monthly_rent: rentValue,
       });
-      navigate("/landlord/properties");
+
+      // Upload photos (optional)
+      if (created?.id && photos.length) {
+        for (let i = 0; i < photos.length; i++) {
+          const file = photos[i];
+          await api.uploadPropertyPhoto(freshAccess, created.id, file, { sort_order: i });
+        }
+      }
+
+      navigate(`/landlord/properties/${created.id}`);
     } catch (err) {
       setError(err?.message || "Failed to create property");
     } finally {
@@ -334,9 +345,57 @@ export default function LandlordCreatePropertyPage() {
                       <span className="material-symbols-outlined text-sm">image</span>
                       Photos
                     </p>
-                    <div className="p-5 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40">
-                      <p className="text-sm text-slate-600 dark:text-slate-300 font-semibold">Photo upload coming next.</p>
-                      <p className="text-xs text-slate-500 mt-1">For now, you can proceed without photos.</p>
+
+                    <div className="p-5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-sm font-bold text-slate-900 dark:text-white">Upload property photos</p>
+                          <p className="text-xs text-slate-500 mt-1">PNG/JPG/WebP. You can upload multiple photos.</p>
+                        </div>
+                        <label className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold cursor-pointer hover:bg-blue-700">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            className="hidden"
+                            onChange={(e) => {
+                              const files = Array.from(e.target.files || []);
+                              if (files.length) setPhotos((prev) => [...prev, ...files]);
+                              e.target.value = "";
+                            }}
+                          />
+                          Add Photos
+                        </label>
+                      </div>
+
+                      {photos.length ? (
+                        <div className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3">
+                          {photos.map((file, idx) => {
+                            const url = URL.createObjectURL(file);
+                            return (
+                              <div key={`${file.name}-${idx}`} className="relative group rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800">
+                                <img src={url} alt={file.name} className="w-full h-28 object-cover" onLoad={() => URL.revokeObjectURL(url)} />
+                                <button
+                                  type="button"
+                                  onClick={() => setPhotos((prev) => prev.filter((_, i) => i !== idx))}
+                                  className="absolute top-2 right-2 bg-black/60 text-white rounded-full w-8 h-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                                  title="Remove"
+                                >
+                                  <span className="material-symbols-outlined text-sm">close</span>
+                                </button>
+                                <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-[10px] px-2 py-1 truncate">
+                                  {file.name}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      ) : (
+                        <div className="mt-4 p-6 rounded-xl border border-dashed border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/40 text-center">
+                          <p className="text-sm text-slate-600 dark:text-slate-300 font-semibold">No photos selected</p>
+                          <p className="text-xs text-slate-500 mt-1">You can skip this step and add photos later.</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ) : null}

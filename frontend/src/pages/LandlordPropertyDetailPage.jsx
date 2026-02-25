@@ -33,11 +33,15 @@ export default function LandlordPropertyDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const access = useAuth((s) => s.access);
+  const ensureAccess = useAuth((s) => s.ensureAccess);
 
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [activeTab, setActiveTab] = useState("overview");
+
+  const [photos, setPhotos] = useState([]);
+  const [photosLoading, setPhotosLoading] = useState(false);
 
   const [assignOpen, setAssignOpen] = useState(false);
   const [tenantQuery, setTenantQuery] = useState("");
@@ -53,12 +57,20 @@ export default function LandlordPropertyDetailPage() {
       setLoading(true);
       setError("");
       try {
-        const data = await api.getProperty(access, id);
+        const freshAccess = await ensureAccess();
+        const data = await api.getProperty(freshAccess, id);
         if (!cancelled) setProperty(data);
+
+        setPhotosLoading(true);
+        const p = await api.listPropertyPhotos(freshAccess, id);
+        if (!cancelled) setPhotos(Array.isArray(p) ? p : []);
       } catch (e) {
         if (!cancelled) setError(e?.message || "Failed to load property");
       } finally {
-        if (!cancelled) setLoading(false);
+        if (!cancelled) {
+          setLoading(false);
+          setPhotosLoading(false);
+        }
       }
     }
 
@@ -237,19 +249,40 @@ export default function LandlordPropertyDetailPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
               {/* Left & Center Content */}
               <div className="lg:col-span-8 flex flex-col gap-8">
-                {/* Photo Gallery Placeholder */}
+                {/* Photo Gallery */}
                 <section>
-                  <div className="grid grid-cols-4 grid-rows-2 gap-3 h-[400px]">
-                    <div className="col-span-3 row-span-2 rounded-xl bg-slate-200 dark:bg-slate-800 overflow-hidden relative flex items-center justify-center">
+                  {photosLoading ? (
+                    <div className="h-[400px] rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center">
+                      <p className="text-slate-500 text-sm">Loading photos...</p>
+                    </div>
+                  ) : photos.length ? (
+                    <div className="grid grid-cols-4 grid-rows-2 gap-3 h-[400px]">
+                      <div className="col-span-3 row-span-2 rounded-xl bg-slate-200 dark:bg-slate-800 overflow-hidden relative">
+                        <img src={photos[0].image_url} alt="Property" className="w-full h-full object-cover" />
+                      </div>
+                      <div className="col-span-1 rounded-xl bg-slate-200 dark:bg-slate-800 overflow-hidden relative">
+                        {photos[1] ? (
+                          <img src={photos[1].image_url} alt="Property" className="w-full h-full object-cover" />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <span className="material-symbols-outlined text-slate-400 text-3xl">image</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="col-span-1 rounded-xl bg-slate-200 dark:bg-slate-800 overflow-hidden relative flex items-center justify-center">
+                        {photos.length > 2 ? (
+                          <span className="text-slate-900 dark:text-white font-black text-lg">+{photos.length - 2}</span>
+                        ) : (
+                          <span className="text-slate-500 font-bold text-sm">Photos</span>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="h-[400px] rounded-xl bg-slate-200 dark:bg-slate-800 overflow-hidden relative flex flex-col items-center justify-center">
                       <span className="material-symbols-outlined text-slate-400 text-6xl">image</span>
+                      <p className="text-slate-500 text-sm mt-2">No photos uploaded yet</p>
                     </div>
-                    <div className="col-span-1 rounded-xl bg-slate-200 dark:bg-slate-800 overflow-hidden relative flex items-center justify-center">
-                      <span className="material-symbols-outlined text-slate-400 text-3xl">image</span>
-                    </div>
-                    <div className="col-span-1 rounded-xl bg-slate-200 dark:bg-slate-800 overflow-hidden relative flex items-center justify-center cursor-pointer hover:bg-slate-300 dark:hover:bg-slate-700 transition-all">
-                      <span className="text-slate-500 font-bold text-sm">Photos</span>
-                    </div>
-                  </div>
+                  )}
                 </section>
 
                 {/* Property Details */}
