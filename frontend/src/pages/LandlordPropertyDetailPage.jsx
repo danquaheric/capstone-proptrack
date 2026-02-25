@@ -85,7 +85,8 @@ export default function LandlordPropertyDetailPage() {
     setTenantLoading(true);
     setTenantError("");
     try {
-      const data = await api.listTenants(access, q);
+      const freshAccess = await ensureAccess();
+      const data = await api.listTenants(freshAccess, q);
       setTenantItems(Array.isArray(data) ? data : []);
     } catch (e) {
       setTenantError(e?.message || "Failed to load tenants");
@@ -98,7 +99,8 @@ export default function LandlordPropertyDetailPage() {
     if (!access || !id) return;
     setTenantError("");
     try {
-      const updated = await api.assignTenant(access, id, { tenant_id: tenantId });
+      const freshAccess = await ensureAccess();
+      const updated = await api.assignTenant(freshAccess, id, { tenant_id: tenantId });
       setProperty(updated);
       setAssignOpen(false);
     } catch (e) {
