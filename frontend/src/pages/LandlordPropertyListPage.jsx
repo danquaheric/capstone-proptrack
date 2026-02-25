@@ -32,6 +32,7 @@ function statusPill(status) {
 export default function LandlordPropertyListPage() {
   const navigate = useNavigate();
   const access = useAuth((s) => s.access);
+  const ensureAccess = useAuth((s) => s.ensureAccess);
 
   const [query, setQuery] = useState("");
   const [items, setItems] = useState([]);
@@ -46,7 +47,8 @@ export default function LandlordPropertyListPage() {
       setLoading(true);
       setError("");
       try {
-        const data = await api.listProperties(access);
+        const freshAccess = await ensureAccess();
+        const data = await api.listProperties(freshAccess);
         if (!cancelled) setItems(Array.isArray(data) ? data : []);
       } catch (e) {
         if (!cancelled) setError(e?.message || "Failed to load properties");

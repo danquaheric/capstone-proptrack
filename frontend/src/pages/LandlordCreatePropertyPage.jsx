@@ -6,6 +6,7 @@ import { useAuth } from "../store/auth";
 export default function LandlordCreatePropertyPage() {
   const navigate = useNavigate();
   const access = useAuth((s) => s.access);
+  const ensureAccess = useAuth((s) => s.ensureAccess);
 
   const [name, setName] = useState("");
   const [streetAddress, setStreetAddress] = useState("");
@@ -27,8 +28,9 @@ export default function LandlordCreatePropertyPage() {
     setSubmitting(true);
     setError("");
     try {
+      const freshAccess = await ensureAccess();
       const rentValue = parseFloat(String(monthlyRent).replace(/[^0-9.]/g, "")) || 0;
-      await api.createProperty(access, {
+      await api.createProperty(freshAccess, {
         name: name.trim(),
         street_address: streetAddress.trim(),
         city: city.trim(),

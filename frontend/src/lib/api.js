@@ -54,6 +54,9 @@ export const api = {
   /** @param {{username:string,password:string}} payload */
   login: (payload) => request(`/api/auth/login/`, { method: "POST", body: JSON.stringify(payload) }),
 
+  /** @param {string} refreshToken */
+  refresh: (refreshToken) => request(`/api/auth/token/refresh/`, { method: "POST", body: JSON.stringify({ refresh: refreshToken }) }),
+
   /** @param {string} accessToken */
   me: (accessToken) =>
     request(`/api/auth/me/`, {
