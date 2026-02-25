@@ -31,12 +31,17 @@ import { API_BASE } from "../config";
  * @returns {Promise<T>}
  */
 async function request(path, opts = {}) {
+  const headers = new Headers(opts.headers || {});
+
+  // Only set JSON content-type when we actually send a non-FormData body.
+  // If no content-type is set and body is a string, some browsers default to text/plain.
+  if (opts.body && !(opts.body instanceof FormData) && !headers.has("Content-Type")) {
+    headers.set("Content-Type", "application/json");
+  }
+
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(opts.headers || {}),
-    },
     ...opts,
+    headers,
   });
 
   if (!res.ok) {
