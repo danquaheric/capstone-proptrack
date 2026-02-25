@@ -409,60 +409,6 @@ export default function LandlordPropertyDetailPage() {
                     </button>
                   </div>
 
-                  {assignOpen ? (
-                    <div className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4" onClick={() => setAssignOpen(false)}>
-                      <div className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5" onClick={(e) => e.stopPropagation()}>
-                        <div className="flex items-center justify-between mb-4">
-                          <h4 className="text-lg font-extrabold">Assign Tenant</h4>
-                          <button className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800" onClick={() => setAssignOpen(false)}>
-                            <span className="material-symbols-outlined">close</span>
-                          </button>
-                        </div>
-
-                        {tenantError ? <p className="text-sm font-semibold text-red-600 mb-3">{tenantError}</p> : null}
-
-                        <div className="flex gap-2 mb-4">
-                          <input
-                            value={tenantQuery}
-                            onChange={(e) => setTenantQuery(e.target.value)}
-                            placeholder="Search tenant by username/email..."
-                            className="flex-1 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
-                          />
-                          <button
-                            onClick={() => loadTenants(tenantQuery)}
-                            className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold"
-                          >
-                            Search
-                          </button>
-                        </div>
-
-                        <div className="max-h-72 overflow-y-auto border border-slate-200 dark:border-slate-800 rounded-lg">
-                          {tenantLoading ? (
-                            <div className="p-4 text-sm text-slate-500">Loading...</div>
-                          ) : tenantItems.length === 0 ? (
-                            <div className="p-4 text-sm text-slate-500">No tenants found.</div>
-                          ) : (
-                            <ul className="divide-y divide-slate-100 dark:divide-slate-800">
-                              {tenantItems.map((t) => (
-                                <li key={t.id} className="p-4 flex items-center justify-between gap-4">
-                                  <div>
-                                    <p className="text-sm font-bold">{t.username}</p>
-                                    <p className="text-xs text-slate-500">{t.email}</p>
-                                  </div>
-                                  <button
-                                    onClick={() => assignTenant(t.id)}
-                                    className="px-3 py-2 rounded-lg bg-primary/10 text-primary text-sm font-bold hover:bg-primary/20"
-                                  >
-                                    Assign
-                                  </button>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ) : null}
                 </div>
               </div>
             </div>
@@ -509,6 +455,71 @@ export default function LandlordPropertyDetailPage() {
               </button>
             </div>
           )}
+
+          {/* Assign Tenant Modal (global, works on any tab) */}
+          {assignOpen ? (
+            <div
+              className="fixed inset-0 z-[100] bg-black/50 flex items-center justify-center p-4"
+              onClick={() => setAssignOpen(false)}
+            >
+              <div
+                className="w-full max-w-lg bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 p-5"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-extrabold">Assign Tenant</h4>
+                  <button
+                    className="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+                    onClick={() => setAssignOpen(false)}
+                  >
+                    <span className="material-symbols-outlined">close</span>
+                  </button>
+                </div>
+
+                {tenantError ? <p className="text-sm font-semibold text-red-600 mb-3">{tenantError}</p> : null}
+
+                <div className="flex gap-2 mb-4">
+                  <input
+                    value={tenantQuery}
+                    onChange={(e) => setTenantQuery(e.target.value)}
+                    placeholder="Search tenant by username/email..."
+                    className="flex-1 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800"
+                  />
+                  <button
+                    onClick={() => loadTenants(tenantQuery)}
+                    className="px-4 py-2 rounded-lg bg-primary text-white text-sm font-bold"
+                  >
+                    Search
+                  </button>
+                </div>
+
+                <div className="max-h-72 overflow-y-auto border border-slate-200 dark:border-slate-800 rounded-lg">
+                  {tenantLoading ? (
+                    <div className="p-4 text-sm text-slate-500">Loading...</div>
+                  ) : tenantItems.length === 0 ? (
+                    <div className="p-4 text-sm text-slate-500">No tenants found.</div>
+                  ) : (
+                    <ul className="divide-y divide-slate-100 dark:divide-slate-800">
+                      {tenantItems.map((t) => (
+                        <li key={t.id} className="p-4 flex items-center justify-between gap-4">
+                          <div>
+                            <p className="text-sm font-bold">{t.username}</p>
+                            <p className="text-xs text-slate-500">{t.email}</p>
+                          </div>
+                          <button
+                            onClick={() => assignTenant(t.id)}
+                            className="px-3 py-2 rounded-lg bg-primary/10 text-primary text-sm font-bold hover:bg-primary/20"
+                          >
+                            Assign
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              </div>
+            </div>
+          ) : null}
         </main>
       </div>
     </div>
