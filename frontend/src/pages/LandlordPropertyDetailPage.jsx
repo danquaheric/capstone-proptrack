@@ -475,7 +475,13 @@ export default function LandlordPropertyDetailPage() {
               </div>
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">No Tenants Assigned</h3>
               <p className="text-sm text-slate-500 mb-6">Assign tenants to this property to track occupancy and rent payments.</p>
-              <button className="px-6 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors">
+              <button
+                onClick={() => {
+                  setAssignOpen(true);
+                  loadTenants(tenantQuery);
+                }}
+                className="px-6 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition-colors"
+              >
                 Assign Tenant
               </button>
             </div>
