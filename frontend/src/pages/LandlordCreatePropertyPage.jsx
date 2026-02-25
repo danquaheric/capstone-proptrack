@@ -21,6 +21,7 @@ export default function LandlordCreatePropertyPage() {
   const [photos, setPhotos] = useState([]);
 
   const [submitting, setSubmitting] = useState(false);
+  const [submittingMsg, setSubmittingMsg] = useState("");
   const [error, setError] = useState("");
 
   const basicValid = Boolean(name.trim() && streetAddress.trim());
@@ -56,6 +57,7 @@ export default function LandlordCreatePropertyPage() {
     }
 
     setSubmitting(true);
+    setSubmittingMsg("Creating property...");
     setError("");
     try {
       const freshAccess = await ensureAccess();
@@ -74,6 +76,7 @@ export default function LandlordCreatePropertyPage() {
       if (created?.id && photos.length) {
         for (let i = 0; i < photos.length; i++) {
           const file = photos[i];
+          setSubmittingMsg(`Uploading photos (${i + 1}/${photos.length})...`);
           await api.uploadPropertyPhoto(freshAccess, created.id, file, { sort_order: i });
         }
       }
@@ -83,6 +86,7 @@ export default function LandlordCreatePropertyPage() {
       setError(err?.message || "Failed to create property");
     } finally {
       setSubmitting(false);
+      setSubmittingMsg("");
     }
   }
 
@@ -482,7 +486,7 @@ export default function LandlordCreatePropertyPage() {
                   onClick={onSubmit}
                   type="button"
                 >
-                  {submitting ? "Creating..." : "Create Property"}
+                  {submitting ? (submittingMsg || "Creating...") : "Create Property"}
                   <span className="material-symbols-outlined text-sm">task_alt</span>
                 </button>
               )}
