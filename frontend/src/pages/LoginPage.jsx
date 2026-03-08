@@ -189,7 +189,7 @@ export default function LoginPage() {
 
       <footer className="p-6 text-center">
         <p className="text-xs text-gray-400 dark:text-gray-600">
-          © 2024 PropManage SaaS Inc. All rights reserved. Professional property management made simple.
+          © 2026 PropManage SaaS Inc. All rights reserved. Professional property management made simple.
         </p>
       </footer>
     </div>

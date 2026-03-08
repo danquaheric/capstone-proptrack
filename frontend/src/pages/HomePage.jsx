@@ -248,7 +248,7 @@ export default function HomePage() {
               </div>
 
               <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-slate-200 dark:border-slate-800 pt-8 sm:flex-row">
-                <p className="text-xs text-slate-400">© 2024 PropTrack SaaS. All rights reserved.</p>
+                <p className="text-xs text-slate-400">© 2026 PropTrack SaaS. All rights reserved.</p>
                 <div className="flex gap-6">
                   <a className="text-xs text-slate-400 hover:text-primary" href="#">Privacy Policy</a>
                   <a className="text-xs text-slate-400 hover:text-primary" href="#">Terms of Service</a>
