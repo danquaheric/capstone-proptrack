@@ -1,4 +1,5 @@
 import { API_BASE } from "../config";
+import { useAuth } from "../store/auth";
 
 /**
  * @typedef {"LANDLORD"|"TENANT"|"ADMIN"} UserRole
@@ -30,6 +31,23 @@ import { API_BASE } from "../config";
  * @param {RequestInit=} opts
  * @returns {Promise<T>}
  */
+async function refreshAccessToken() {
+  const { refresh } = useAuth.getState();
+  if (!refresh) return null;
+
+  const res = await fetch(`${API_BASE}/api/auth/token/refresh/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ refresh }),
+  });
+
+  if (!res.ok) return null;
+  const data = await res.json().catch(() => null);
+  if (!data?.access) return null;
+  useAuth.setState({ access: data.access });
+  return data.access;
+}
+
 async function request(path, opts = {}) {
   const headers = new Headers(opts.headers || {});
 
@@ -45,6 +63,20 @@ async function request(path, opts = {}) {
   });
 
   if (!res.ok) {
+    if (res.status === 401 && headers.has("Authorization")) {
+      const newAccess = await refreshAccessToken();
+      if (newAccess) {
+        headers.set("Authorization", `Bearer ${newAccess}`);
+        const retry = await fetch(`${API_BASE}${path}`, {
+          ...opts,
+          headers,
+        });
+        if (retry.ok) return await retry.json();
+        const retryText = await retry.text().catch(() => "");
+        throw new Error(retryText || `Request failed: ${retry.status}`);
+      }
+    }
+
     const text = await res.text().catch(() => "");
     throw new Error(text || `Request failed: ${res.status}`);
   }
