@@ -22,7 +22,8 @@ services:
       - key: PYTHON_VERSION
         value: "3.11.8"
 
-  - type: pserv
-    name: proptrack-db
+databases:
+  - name: proptrack-db
     plan: free
-    env: postgresql
+    databaseName: proptrack
+    user: proptrack
